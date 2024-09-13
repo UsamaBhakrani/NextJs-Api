@@ -60,6 +60,33 @@ const PATCH = async (req: NextRequest, res: NextResponse) => {
   }
 };
 
-const DELETE = (req: NextRequest, res: NextResponse) => {};
+const DELETE = async (req: NextRequest, res: NextResponse) => {
+  try {
+    await connectDb();
+    const body = await req.json();
+    const { userId } = body;
+
+    if (!userId) {
+      return NextResponse.json({ error: "Provide UserId" }, { status: 400 });
+    }
+
+    if (!Types.ObjectId.isValid(userId)) {
+      return NextResponse.json(
+        { error: "Provide Valid UserId" },
+        { status: 400 }
+      );
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 400 });
+    }
+
+    return NextResponse.json(deletedUser, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error }, { status: 400 });
+  }
+};
 
 export { GET, POST, PATCH, DELETE };
