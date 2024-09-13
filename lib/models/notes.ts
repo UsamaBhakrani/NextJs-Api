@@ -1,11 +1,11 @@
 import { model, models, Schema } from "mongoose";
 
-const UserSchema = new Schema({
-  email: { type: String, required: true, unique: true },
-  userName: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+const NoteSchema = new Schema({
+  title: { type: String, required: true },
+  description: { type: String },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-const User = models.User || model("User", UserSchema);
+const Note = models.Note || model("Note", NoteSchema);
 
-export default User;
+export default Note;
