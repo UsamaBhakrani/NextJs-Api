@@ -77,10 +77,17 @@ const DELETE = async (req: NextRequest, res: NextResponse) => {
       );
     }
 
-    const deletedUser = await User.findByIdAndDelete(userId);
-
-    if (!deletedUser) {
+    const user = await User.findById(userId);
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 400 });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+    if (!deletedUser) {
+      return NextResponse.json(
+        { error: "Problem deleted user" },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json(deletedUser, { status: 200 });
