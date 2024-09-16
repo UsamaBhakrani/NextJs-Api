@@ -56,6 +56,13 @@ const POST = async (req: NextRequest, res: NextResponse) => {
       );
     }
 
+    if (!title || !description) {
+      return NextResponse.json(
+        { error: "Title and description are required" },
+        { status: 400 }
+      );
+    }
+
     const user = await User.findById(userId);
 
     if (!user) {
@@ -71,8 +78,9 @@ const POST = async (req: NextRequest, res: NextResponse) => {
       );
     }
 
-    return NextResponse.json(newNote, { status: 201 });
+    return NextResponse.json({ newNote }, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: error }, { status: 400 });
   }
 };
