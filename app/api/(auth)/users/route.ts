@@ -63,8 +63,8 @@ const PATCH = async (req: NextRequest, res: NextResponse) => {
 const DELETE = async (req: NextRequest, res: NextResponse) => {
   try {
     await connectDb();
-    const body = await req.json();
-    const { userId } = body;
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
 
     if (!userId) {
       return NextResponse.json({ error: "Provide UserId" }, { status: 400 });
