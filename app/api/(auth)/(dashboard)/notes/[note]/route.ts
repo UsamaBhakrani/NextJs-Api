@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 const GET = async (req: NextRequest, context: { params: string | any }) => {
   const noteId = context.params.note;
-  console.log(context);
   try {
     await connectDb();
     const { searchParams } = new URL(req.url);
